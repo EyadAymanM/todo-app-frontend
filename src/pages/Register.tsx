@@ -2,21 +2,20 @@ import { ChangeEvent, FormEvent, useState } from "react";
 import toast, { Toaster } from 'react-hot-toast';
 import { useNavigate } from "react-router-dom";
 
-const Login = () => {
+const Regiser = () => {
 
   // setting states for email & password 
   const [email, setEmail] = useState('');
   const [pwd, setPwd] = useState('');
-  const [remember, setRemember] = useState(false);
   // using navigate function for getting to home page if authenticated
   const navigate = useNavigate()
-  // login function 
+
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    const login = async () => {
+    const register = async () => {
       // sending get request to the server
       const res = await fetch(
-        `http://localhost:3000/auth/login`,
+        `http://localhost:3000/auth/register`,
         {
           headers: {
             'Accept': 'application/json',
@@ -26,29 +25,15 @@ const Login = () => {
           body: JSON.stringify({ email, password: pwd })
         }
       )
-      const { error, token, user } = await res.json()
-
-      if (user) {
-        toast.success('Successfull Login')
-        if (remember) {
-          localStorage.setItem('token', token)
-          localStorage.setItem('user', user.email.slice(0, user.email.indexOf('@')))
-        } else {
-          sessionStorage.setItem('token', token)
-          sessionStorage.setItem('user', user.email.slice(0, user.email.indexOf('@')))
-        }
-        setTimeout(() => {
-          navigate('/')
-        }, 1000);
-      }
-      else
+      const { error } = await res.json()
+      if(error)
         toast.error(error)
-
+      else{
+        navigate('/login')
+      }
     }
-
-    login()
+    register()
   };
-
   return (
     <section className="w-screen h-screen bg-[#FAF9F9] flex justify-center items-center">
       <form
@@ -56,6 +41,7 @@ const Login = () => {
         className="w-84 bg-[#BEE3DB] p-10 pb-8 flex flex-col gap-4 rounded-lg shadow-xl font-josefin">
 
         <h1 className="text-4xl text-center font-josefin font-bold text-gray-600 select-none text-shadow">To-do App</h1>
+        <h1 className="text-2xl text-center font-josefin font-bold text-gray-600 select-none text-shadow">create account</h1>
         {/* E-mail Feild */}
         <div className="flex flex-col ">
           <label htmlFor="email">E-mail</label>
@@ -77,35 +63,31 @@ const Login = () => {
             onChange={((e: ChangeEvent<HTMLInputElement>) => setPwd(e.target.value))}
             type="password"
             required
-            placeholder="••••••••"
+            placeholder="Must have at least 6 characters"
             name="password"
             id="password"
             className="border border-[#89B0AE] bg-[#FAF9F9] focus:outline-[#89B0AE] py-1 px-2 placeholder:text-gray-400"
           />
         </div>
 
-
         <span
-          onClick={() => navigate('/register')}
+          onClick={() => navigate('/login')}
           className="text-xs text-gray-500 font-light underline hover:text-blue-500 cursor-pointer"
-        >don't have an account? register now
+        >Aleady have an account? login
         </span>
 
-        {/* Remember Feild */}
-        <div className="flex gap-2">
-          <label htmlFor="remember" className="text-sm font-extralight select-none cursor-pointer">Remember me?</label>
-          <input type="checkbox" className="cursor-pointer" name="remember" id="remember" onClick={() => setRemember((pre) => !pre)} />
-        </div>
-
-        {/* Login Button */}
+        {/* From Submit Button */}
         <input
           type="submit"
-          value="Log in"
+          value="Register"
           className="border border-[#89B0AE] text-[#555B6E] w-fit px-6 self-center py-1 rounded-sm bg-[#FAF9F9] hover:bg-[#89B0AE] hover:text-[#FAF9F9] hover:cursor-pointer duration-100"
         />
       </form>
       <Toaster />
     </section>
   );
-};
-export default Login;
+}
+
+
+
+export default Regiser;

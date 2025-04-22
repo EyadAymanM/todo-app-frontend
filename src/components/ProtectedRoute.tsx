@@ -7,7 +7,7 @@ const ProtectedRoute = () => {
     return <Navigate to="/login" replace />;
   }
 
-  return <Outlet />; // renders child routes
+  return <Outlet />
 };
 
 export default ProtectedRoute;

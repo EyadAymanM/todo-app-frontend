@@ -18,7 +18,6 @@ import { Pen, Trash } from "lucide-react";
 import { FormEvent } from "react"
 import { DialogClose } from "@radix-ui/react-dialog"
 
-
 interface TodoProps {
   todo: todo;
   editTask: (taskId: number, newTask: string) => void;
@@ -26,10 +25,7 @@ interface TodoProps {
   deleteTask: (taskId: number) => void;
 }
 
-
-const Todo: React.FC<TodoProps> = ({ todo, editTask, toggleCompleted,deleteTask }) => {
-
-
+const Todo: React.FC<TodoProps> = ({ todo, editTask, toggleCompleted, deleteTask }) => {
 
   return (
     <div className="w-fit font-josefin">
@@ -58,8 +54,13 @@ const Todo: React.FC<TodoProps> = ({ todo, editTask, toggleCompleted,deleteTask 
                   className="flex justify-between group items-center m-1 p-1 rounded cursor-pointer hover:bg-[#BEE3DB] select-none"
                   onClick={() => toggleCompleted(id, completed)}
                 >
+                  {/* Task Title */}
                   <span>{task}</span>
+
+                  {/* Task Controls */}
                   <span className="flex items-center gap-3">
+
+                    {/* Task Delete */}
                     <span className="p-2 hover:bg-[#FF6B6B] rounded-full" onClick={(e) => e.stopPropagation()}>
                       <Dialog>
                         <DialogTrigger className="flex cursor-pointer">
@@ -70,7 +71,7 @@ const Todo: React.FC<TodoProps> = ({ todo, editTask, toggleCompleted,deleteTask 
                             <DialogTitle className="font-roboto">Delete task</DialogTitle>
                           </DialogHeader>
                           <span className="font-josefin">Are you sure you want to delete this taks?</span>
-                          <form className="flex flex-col gap-4" onSubmit={(e: FormEvent) => { e.preventDefault(); deleteTask(id)}}>
+                          <form className="flex flex-col gap-4" onSubmit={(e: FormEvent) => { e.preventDefault(); deleteTask(id) }}>
                             <button className="font-roboto w-fit px-2 py-1 bg-[#FF6B6B] hover:bg-[#ff2626] rounded-lg self-center cursor-pointer">
                               <DialogClose>
                                 Delete
@@ -81,6 +82,8 @@ const Todo: React.FC<TodoProps> = ({ todo, editTask, toggleCompleted,deleteTask 
                       </Dialog>
 
                     </span>
+
+                    {/* Task Edit */}
                     <span className="p-2 hover:bg-[#4ECDC4] rounded-full" onClick={(e) => e.stopPropagation()}>
                       <Dialog>
                         <DialogTrigger className="flex cursor-pointer"><Pen className="w-4 h-4" /></DialogTrigger>
@@ -99,15 +102,17 @@ const Todo: React.FC<TodoProps> = ({ todo, editTask, toggleCompleted,deleteTask 
                         </DialogContent>
                       </Dialog>
                     </span>
+
+                    {/* Completion Status */}
                     <span>
-                      <Checkbox className="m-1 cursor-pointer bg-[#EAE9E9] group-hover:bg-[#00cc55a2]" checked={completed} />
+                      <Checkbox className="m-1 cursor-pointer bg-[#EAE9E9] group-hover:bg-[#00cc55a2]" checked={completed ? true : false} />
                     </span>
+                    
                   </span>
-                </li>)}
+                </li>
+              )}
             </ul>
           </AccordionContent>
-
-
         </AccordionItem>
       </Accordion>
     </div>
